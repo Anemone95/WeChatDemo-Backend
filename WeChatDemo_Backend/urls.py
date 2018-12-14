@@ -21,4 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', app_views.user_action),
     path('object/', app_views.get_object),
+    path('question/', app_views.question_action),
+    path('answer/',app_views.answer_action),
+    path('review/',app_views.review_action),
+
 ]

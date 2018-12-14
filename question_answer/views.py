@@ -18,6 +18,9 @@ def get_object(request):
     _id=request.GET['id']
     entity2model={
         "user": User,
+        "question": Question,
+        "answer": Answer,
+        "review": Review,
     }
     _object=entity2model[entity].objects.get(id=_id)
     return JsonResponse(dict(status=200, body=_object.to_dict()))
@@ -40,6 +43,44 @@ def user_action(request):
     else:
         return JsonResponse(dict(status=status, error=body))
 
+def question_action(request):
+    request_json = json.loads(request.body)
+    action2func = {
+        "ask_question": ask_question,
+        "update_question": update_question,
+        "follow_question": follow_question,
+        "disfollow_question": disfollow_question,
+    }
+    body, status=action2func[request_json["action"]](request, request_json["body"])
+    if status==200:
+        return JsonResponse(dict(status=status, response=body))
+    else:
+        return JsonResponse(dict(status=status, error=body))
+
+def answer_action(request):
+    request_json = json.loads(request.body)
+    action2func = {
+        "add_answer": add_answer,
+        "update_answer": update_answer,
+        "follow_answer": follow_answer,
+        "disfollow_answer": disfollow_answer,
+    }
+    body, status = action2func[request_json["action"]](request, request_json["body"])
+    if status == 200:
+        return JsonResponse(dict(status=status, response=body))
+    else:
+        return JsonResponse(dict(status=status, error=body))
+
+def review_action(request):
+    request_json = json.loads(request.body)
+    action2func = {
+        "add_review": add_review,
+    }
+    body, status = action2func[request_json["action"]](request, request_json["body"])
+    if status == 200:
+        return JsonResponse(dict(status=status, response=body))
+    else:
+        return JsonResponse(dict(status=status, error=body))
 
 def wechat_login(request, body):
     payload = {'appid': 'wx1c530cec0bfa60c7',
@@ -107,4 +148,77 @@ def report_user(request, body):
     bl.save()
     return "",200
 
+def ask_question(request, body):
+    title=body["title"]
+    content=body["content"]
+    is_anonynous=body["is_anonynous"]
+    question=Question(title=title,
+                      content=content,
+                      is_anonynous=is_anonynous,
+                      asker=request.user,
+                      )
+    question.save()
+    return question.id,200
 
+def update_question(request, body):
+    question=Question.objects.get(id=body["qid"])
+    question.title=body["title"]
+    question.content=body["content"]
+    question.is_anonynous=body["is_anonynous"]
+    question.is_closed=body["is_closed"]
+    question.save()
+    return question.id,200
+
+def follow_question(request, body):
+    followed_question = Question.objects.get(id=body["qid"])
+    request.user.followed_questions.add(followed_question)
+    request.user.save()
+    return "", 200
+
+def disfollow_question(request, body):
+    disfollowed_user = Question.objects.get(id=body["qid"])
+    request.user.followed_questions.remove(disfollowed_user)
+    request.user.save()
+    return "", 200
+
+def add_answer(request, body):
+    qid=body["qid"]
+    question=Question.objects.get(id=qid)
+    answer = Answer(question=question,
+
+                    content=body["content"],
+                    is_anonynous=body["is_anonynous"],
+                    is_allow_review=body["is_allow_review"]
+                    )
+    answer.save()
+    return answer.id,200
+
+def update_answer(request, body):
+    answer = Answer.objects.get(id=1)
+    answer.content=body["content"]
+    answer.is_anonynous = body["is_anonynous"],
+    answer.is_allow_review = body["is_allow_review"]
+    answer.save()
+    return answer.id, 200
+
+
+def follow_answer(request, body):
+    follow_answer = Answer.objects.get(id=body["aid"])
+    request.user.follow_answers.add(follow_answer)
+    request.user.save()
+    return "",200
+
+def disfollow_answer(request, body):
+    disfollow_answer = Answer.objects.get(id=body["aid"])
+    request.user.followed_answers.remove(disfollow_answer)
+    request.user.save()
+    return "", 200
+
+def add_review(request, body):
+    aid=body["aid"]
+    answer=Answer.objects.get(id=aid)
+    review = Review(content=body["content"],
+                    answer=answer,
+                    )
+    review.save()
+    return review.id,200

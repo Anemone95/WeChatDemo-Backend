@@ -24,6 +24,7 @@ class User(AbstractUser):
                 followed_answers=followed_answers,
                 blocked_users=blocked_users,
         )
+
     openid=models.CharField(max_length=32)
     wechat_session=models.CharField(max_length=32)
     nickname=models.CharField(max_length=64)
@@ -36,6 +37,17 @@ class User(AbstractUser):
 class Question(models.Model):
     class Meta:
         app_label = 'question_answer'
+
+    def to_dict(self):
+        return dict(
+                title=self.title,
+                content=self.content,
+                asker=self.asker,
+                is_anonynous=self.is_anonynous,
+                is_closed=self.is_closed,
+                create_time = self.create_time,
+                recent_time = self.recent_time,
+        )
     title=models.CharField(max_length=255)
     content=models.TextField()
     asker=models.ForeignKey("User", on_delete=models.CASCADE)
@@ -47,6 +59,16 @@ class Question(models.Model):
 class Answer(models.Model):
     class Meta:
         app_label = 'question_answer'
+    def to_dict(self):
+        return dict(
+                content=self.content,
+                answerer=self.answerer,
+                question=self.question,
+                is_anonynous=self.is_anonynous,
+                is_allow_review=self.is_allow_review,
+                create_time = self.create_time,
+                recent_time = self.recent_time,
+        )
     content=models.TextField()
     answerer=models.ForeignKey("User", on_delete=models.CASCADE)
     question=models.ForeignKey("Question", on_delete=models.CASCADE)
@@ -58,6 +80,15 @@ class Answer(models.Model):
 class Review(models.Model):
     class Meta:
         app_label = 'question_answer'
+
+    def to_dict(self):
+        return dict(
+                content=self.content,
+                reviewer=self.reviewer,
+                answer=self.answer,
+                create_time = self.create_time,
+                recent_time = self.recent_time,
+        )
     content=models.TextField()
     reviewer=models.ForeignKey("User", on_delete=models.CASCADE)
     answer=models.ForeignKey("Question", on_delete=models.CASCADE)
@@ -67,6 +98,15 @@ class Review(models.Model):
 class BlockList(models.Model):
     class Meta:
         app_label = 'question_answer'
+
+    def to_dict(self):
+        return dict(
+                report_user=self.report_user,
+                bad_user=self.bad_user,
+                reason=self.reason,
+                create_time = self.create_time,
+        )
+
     report_user=models.ForeignKey("User", on_delete=models.CASCADE, related_name="report_user")
     bad_user=models.ForeignKey("User", on_delete=models.CASCADE, related_name="bad_user")
     reason=models.TextField(default="")

@@ -298,7 +298,7 @@ RESPONSE:
 
 ```json
 {
-    "action":"follow_qustion",
+    "action":"follow_question",
     "body":
     {
         "qid":1
@@ -318,7 +318,7 @@ RESPONSE:
 
 ```json
 {
-    "action":"dis_follow_qustion",
+    "action":"disfollow_question",
     "body":
     {
         "qid":1
@@ -336,7 +336,7 @@ RESPONSE:
 
 # /Answer
 
-POST /question
+POST /answer
 
 ## AddAnswer
 ```json
@@ -346,8 +346,8 @@ POST /question
     {
         "qid":1,
         "content":"content",
-        "is_anonynous":False,
-        "is_closed":False
+        "is_anonynous":false,
+        "is_allow_review":true
     }
 }
 ```
@@ -371,7 +371,7 @@ RESPONSE:
         "aid":1,
         "content":"content",
         "is_anonynous":False,
-        "is_closed":False
+        "is_allow_review":true
     }
 }
 ```
@@ -410,7 +410,7 @@ RESPONSE:
 
 ```json
 {
-    "action":"dis_follow_answer",
+    "action":"disfollow_answer",
     "body":
     {
         "aid":1
