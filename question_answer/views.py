@@ -185,7 +185,7 @@ def add_answer(request, body):
     qid=body["qid"]
     question=Question.objects.get(id=qid)
     answer = Answer(question=question,
-
+                    answerer=request.user,
                     content=body["content"],
                     is_anonynous=body["is_anonynous"],
                     is_allow_review=body["is_allow_review"]
@@ -194,7 +194,10 @@ def add_answer(request, body):
     return answer.id,200
 
 def update_answer(request, body):
-    answer = Answer.objects.get(id=1)
+    ##有问题
+    ##
+    ##
+    answer = Answer.objects.get(id=body["aid"])
     answer.content=body["content"]
     answer.is_anonynous = body["is_anonynous"],
     answer.is_allow_review = body["is_allow_review"]
@@ -204,7 +207,7 @@ def update_answer(request, body):
 
 def follow_answer(request, body):
     follow_answer = Answer.objects.get(id=body["aid"])
-    request.user.follow_answers.add(follow_answer)
+    request.user.followed_answers.add(follow_answer)
     request.user.save()
     return "",200
 
@@ -219,6 +222,7 @@ def add_review(request, body):
     answer=Answer.objects.get(id=aid)
     review = Review(content=body["content"],
                     answer=answer,
+                    reviewer=request.user
                     )
     review.save()
     return review.id,200

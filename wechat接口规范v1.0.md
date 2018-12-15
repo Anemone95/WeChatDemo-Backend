@@ -370,7 +370,7 @@ RESPONSE:
     {
         "aid":1,
         "content":"content",
-        "is_anonynous":False,
+        "is_anonynous":false,
         "is_allow_review":true
     }
 }

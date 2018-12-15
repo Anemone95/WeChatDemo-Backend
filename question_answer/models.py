@@ -91,7 +91,7 @@ class Review(models.Model):
         )
     content=models.TextField()
     reviewer=models.ForeignKey("User", on_delete=models.CASCADE)
-    answer=models.ForeignKey("Question", on_delete=models.CASCADE)
+    answer=models.ForeignKey("Answer", on_delete=models.CASCADE)
     create_time=models.TimeField(auto_now_add=True)
     recent_time=models.TimeField(auto_now=True)
 
@@ -104,7 +104,10 @@ class BlockList(models.Model):
                 report_user=self.report_user,
                 bad_user=self.bad_user,
                 reason=self.reason,
+                is_anonynous=self.is_anonynous,
+                is_closed=self.is_closed,
                 create_time = self.create_time,
+                recent_time = self.recent_time,
         )
 
     report_user=models.ForeignKey("User", on_delete=models.CASCADE, related_name="report_user")
