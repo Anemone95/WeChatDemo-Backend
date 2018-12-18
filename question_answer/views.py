@@ -310,7 +310,7 @@ def getFollowedAnswer(request):
         component["nickName"] = (str)(i.id)
         component["questionId"] = i.nickname
         component["answerId"] = (str)(i.id)
-        component["questionTitile"] = i.nickname
+        component["questionTitle"] = i.nickname
         component["answerContent"] = (str)(i.id)
         component["reviewNum"] = i.nickname
         # component["followTime"] = (str)(i.title)
