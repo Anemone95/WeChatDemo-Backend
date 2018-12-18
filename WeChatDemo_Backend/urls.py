@@ -24,5 +24,11 @@ urlpatterns = [
     path('question/', app_views.question_action),
     path('answer/',app_views.answer_action),
     path('review/',app_views.review_action),
+    path('answerOutlineList/',app_views.getAnswerOutlineList),
+    path('myAnswer/',app_views.getMyAnswer),
+    path('myQuestion/',app_views.getMyQuestion),
+    path('followedUser/', app_views.getFollowedUser),
+    path('followedQuestion/', app_views.getFollowedQuestion),
+    path('followedAnswer/', app_views.getFollowedAnswer),
 
 ]

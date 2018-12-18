@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import auth
 import requests
 import json
+import datetime,time
 
 from .models import *
 
@@ -194,7 +195,7 @@ def add_answer(request, body):
     return answer.id,200
 
 def update_answer(request, body):
-    ##有问题
+    # FIXME 有问题
     ##
     ##
     answer = Answer.objects.get(id=body["aid"])
@@ -226,3 +227,92 @@ def add_review(request, body):
                     )
     review.save()
     return review.id,200
+
+def getAnswerOutlineList(request):
+    answer=Answer.objects.filter(recent_time__lte=datetime.datetime.now()+datetime.timedelta(days=-30))
+    res = []
+
+    for i in reversed(answer):
+        print (type(i.question.id))
+        component={}
+        component["nickName"] = User.objects.get(id=i.answerer.id).nickname
+        component["questionId"] = (str)(i.question.id)
+        component["answerId"] = (str)(i.id)
+        component["questionTitle"] = (str)(Question.objects.get(id=i.question.id).title)
+        component["answerContent"] = i.content[:100]
+        component["reviewNum"] = (str)(len(Review.objects.filter(answer=i)))
+        res.append(component)
+
+    return JsonResponse(res, safe=False)
+
+def getMyAnswer(request):
+    answer=Answer.objects.filter(answerer=request.user)
+    res = []
+    for i in reversed(answer):
+        print (type(i.question.id))
+        component={}
+        component["nickName"] = User.objects.get(id=i.answerer.id).nickname
+        component["questionId"] = (str)(i.question.id)
+        component["answerId"] = (str)(i.id)
+        component["questionTitle"] = (str)(Question.objects.get(id=i.question.id).title)
+        component["answerContent"] = i.content[:100]
+        component["reviewNum"] = (str)(len(Review.objects.filter(answer=i)))
+        res.append(component)
+
+    return JsonResponse(res, safe=False)
+
+def getMyQuestion(request):
+    question = Question.objects.filter(asker=request.user)
+    res = []
+    for i in reversed(question):
+        print(type(i.id))
+        component = {}
+        component["nickName"] = User.objects.get(id=i.asker.id).nickname
+        component["questionId"] = (str)(i.id)
+        component["questionTitle"] = (str)(i.title)
+        component["questionContent"] = i.content[:100]
+        component["answerNum"] = (str)(len(Answer.objects.filter(question=i)))
+        res.append(component)
+
+    return JsonResponse(res, safe=False)
+
+def getFollowedUser(request):
+    user = request.user.followed_users.all()
+    print(type(user))
+    res = []
+    for i in reversed(user):
+        component = {}
+        component["uid"] = (str)(i.id)
+        component["nickname"] = i.nickname
+        #component["followTime"] = (str)(i.title)
+        res.append(component)
+    return JsonResponse(res, safe=False)
+
+def getFollowedQuestion(request):
+    questions = request.user.followed_questions.all()
+    res = []
+    for i in reversed(questions):
+        component = {}
+        component["nickName"] = User.objects.get(id=i.asker.id).nickname
+        component["questionId"] = (str)(i.id)
+        component["questionTitle"] = (str)(i.title)
+        component["questionContent"] = i.content[:100]
+        component["answerNum"] = (str)(len(Answer.objects.filter(question=i)))
+        # component["followTime"] = (str)(i.title)
+        res.append(component)
+    return JsonResponse(res, safe=False)
+
+def getFollowedAnswer(request):
+    answers = request.user.followed_answers.all()
+    res = []
+    for i in reversed(answers):
+        component = {}
+        component["nickName"] = (str)(i.id)
+        component["questionId"] = i.nickname
+        component["answerId"] = (str)(i.id)
+        component["questionTitile"] = i.nickname
+        component["answerContent"] = (str)(i.id)
+        component["reviewNum"] = i.nickname
+        # component["followTime"] = (str)(i.title)
+        res.append(component)
+    return JsonResponse(res, safe=False)

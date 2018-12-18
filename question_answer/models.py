@@ -42,7 +42,7 @@ class Question(models.Model):
         return dict(
                 title=self.title,
                 content=self.content,
-                asker=self.asker,
+                asker=self.asker.id,
                 is_anonynous=self.is_anonynous,
                 is_closed=self.is_closed,
                 create_time = self.create_time,
@@ -62,8 +62,8 @@ class Answer(models.Model):
     def to_dict(self):
         return dict(
                 content=self.content,
-                answerer=self.answerer,
-                question=self.question,
+                answerer=self.answerer.id,
+                question=self.question.id,
                 is_anonynous=self.is_anonynous,
                 is_allow_review=self.is_allow_review,
                 create_time = self.create_time,
@@ -84,8 +84,8 @@ class Review(models.Model):
     def to_dict(self):
         return dict(
                 content=self.content,
-                reviewer=self.reviewer,
-                answer=self.answer,
+                reviewer=self.reviewer.id,
+                answer=self.answer.id,
                 create_time = self.create_time,
                 recent_time = self.recent_time,
         )
@@ -101,8 +101,8 @@ class BlockList(models.Model):
 
     def to_dict(self):
         return dict(
-                report_user=self.report_user,
-                bad_user=self.bad_user,
+                report_user=self.report_user.id,
+                bad_user=self.bad_user.id,
                 reason=self.reason,
                 is_anonynous=self.is_anonynous,
                 is_closed=self.is_closed,
