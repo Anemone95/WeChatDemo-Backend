@@ -75,7 +75,7 @@ Failed Response：
     "rid":1,
     "content": "content",
     "reviewer": "User Id",
-    "is_closed": False,
+    "answer": "Answer id",
     "create_time":1111,
     "recent_time": 1111
 }
