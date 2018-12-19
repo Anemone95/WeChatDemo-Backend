@@ -62,6 +62,7 @@ Failed Response：
     "aid": 1,
     "content": "content",
     "answerer": "User Id",
+    "question": "Question Id",
     "is_anonynous": True,
     "is_allow_review": False,
     "create_time":1111,
@@ -451,4 +452,100 @@ RESPONSE:
 }
 ```
 
+# 我的关注
+
+1、获取我关注的用户列表，根据关注时间由近到远排序
+url:"/followedUser"
+
+method: GET
+
+```json
+[{
+    "uid":"被关注用户的id",
+    "nickname","被关注用户的昵称",
+    "followTime","开始关注的时间"
+}]
+```
+
+2、获取我关注的问题列表，根据关注时间由近到远排序
+url:"/followedQuestion"
+
+method: GET
+
+```json
+[{
+    "nickName":"提问用户的用户名",
+    "questionId":"问题id",
+    "questionTitile": "问题标题",
+    "questionContent":"该问题100字以内的描述概要",
+    "answerNum":"回答数",
+    "followTime","开始关注的时间"
+}]
+```
+
+3、获取我关注的回答列表，根据关注时间由近到远排序
+url:"/followAnswer"
+
+method: GET
+
+```json
+[{
+    "nickName":"答主的用户名",
+    "questionId":"问题id",
+    "answerId":"回答id",
+    "questionTitile": "该回答针对的问题的题目",
+    "answerContent":"该回答的100字以内的内容概要",
+    "reviewNum":"评论数",
+    "followTime","开始关注的时间"
+}]
+```
+
+# 我的提问
+
+该接口会返回我的回答的概要信息，按时间由近到远顺序排序
+url:"/myAnswer"
+
+method: GET
+
+```json
+{
+    "nickName":"答主的用户名,即自己的用户名",
+    "questionId":"问题id",
+    "answerId":"回答id",
+    "questionTitile": "该回答针对的问题的题目",
+    "answerContent":"该回答的100字以内的内容概要",
+    "reviewNum":"评论数"
+}
+```
+
+一个相似的接口，用于实现返回“我的提问”的概要信息
+url:"/myQuestion"
+
+method: GET
+
+```json
+{
+    "nickName":"答主的用户名,即自己的用户名",
+    "questionId":"问题id",
+    "questionTitile": "问题标题",
+    "questionContent":"该问题100字以内的描述概要",
+    "answerNum":"回答数"
+}
+```
+
+# mainStage页面关于回答概要的接口
+
+url:"/answerOutlineList"
+method: get
+
+```json
+{
+    "nickName":"答主的用户名",
+    "questionId":"问题id"，
+    "answerId":"回答id",
+    "questionTitile": "该回答针对的问题的题目",
+    "answerContent":"该回答的100字以内的内容概要",
+    "reviewNum":"评论数"
+}
+```
 
