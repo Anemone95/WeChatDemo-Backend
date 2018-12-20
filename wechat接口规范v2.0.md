@@ -35,10 +35,10 @@ Failed Response：
     "uid":1,
     "nickname":"xxx",
     "describ":"describe",
-    "followed_users": "User IDs",
+    "followed_users": [{"id":1,"nickname":"nickname"}],
     "followed_questions":"Question IDs",
     "followed_answers":"answer IDs",
-    "blocked_users":"User IDs"
+    "blocked_users":[{"id":1,"nickname":"nickname"}]
 }
 ```
 

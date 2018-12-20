@@ -194,13 +194,11 @@ def add_answer(request, body):
     answer.save()
     return answer.id,200
 
+
 def update_answer(request, body):
-    # FIXME 有问题
-    ##
-    ##
     answer = Answer.objects.get(id=body["aid"])
     answer.content=body["content"]
-    answer.is_anonynous = body["is_anonynous"],
+    answer.is_anonynous = body["is_anonynous"]
     answer.is_allow_review = body["is_allow_review"]
     answer.save()
     return answer.id, 200

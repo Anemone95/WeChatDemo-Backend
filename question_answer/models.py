@@ -14,10 +14,10 @@ class User(AbstractUser):
         return self.nickname if self.nickname else self.username
 
     def to_dict(self):
-        followed_users=list(map(lambda e: e.id, self.followed_users.all()))
+        followed_users=list(map(lambda e: {"id": e.id, "nickname": e.nickname}, self.followed_users.all()))
         followed_questions=list(map(lambda e: e.id, self.followed_questions.all()))
         followed_answers=list(map(lambda e: e.id, self.followed_answers.all()))
-        blocked_users=list(map(lambda e: e.id, self.blocked_users.all()))
+        blocked_users=list(map(lambda e: {"id": e.id, "nickname": e.nickname}, self.blocked_users.all()))
         return dict(
                 uid=self.id,
                 nickname=self.nickname,
