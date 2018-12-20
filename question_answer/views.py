@@ -84,7 +84,7 @@ def review_action(request):
         return JsonResponse(dict(status=status, error=body))
 
 def wechat_login(request, body):
-    payload = {'appid': 'wx1c530cec0bfa60c7',
+    payload = {'appid': 'wx8c53cbd60fbb55bc',
                'secret': get_wechat_secret_key(), # 4da***57
                'js_code': body["code"],
                'grant_type': 'authorization_code',
@@ -229,6 +229,7 @@ def add_review(request, body):
     return review.id,200
 
 def getAnswerOutlineList(request):
+    '''Success'''
     answer=Answer.objects.filter(recent_time__lte=datetime.datetime.now()+datetime.timedelta(days=-30))
     res = []
 
@@ -246,6 +247,7 @@ def getAnswerOutlineList(request):
     return JsonResponse(res, safe=False)
 
 def getMyAnswer(request):
+    '''success'''
     answer=Answer.objects.filter(answerer=request.user)
     res = []
     for i in reversed(answer):
@@ -262,6 +264,7 @@ def getMyAnswer(request):
     return JsonResponse(res, safe=False)
 
 def getMyQuestion(request):
+    '''success'''
     question = Question.objects.filter(asker=request.user)
     res = []
     for i in reversed(question):

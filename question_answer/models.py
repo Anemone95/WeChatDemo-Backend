@@ -10,6 +10,9 @@ class User(AbstractUser):
     class Meta:
         app_label = 'question_answer'
 
+    def __str__(self):
+        return self.nickname if self.nickname else self.username
+
     def to_dict(self):
         followed_users=list(map(lambda e: e.id, self.followed_users.all()))
         followed_questions=list(map(lambda e: e.id, self.followed_questions.all()))
@@ -38,6 +41,9 @@ class Question(models.Model):
     class Meta:
         app_label = 'question_answer'
 
+    def __str__(self):
+        return self.title
+
     def to_dict(self):
         return dict(
                 title=self.title,
@@ -59,6 +65,10 @@ class Question(models.Model):
 class Answer(models.Model):
     class Meta:
         app_label = 'question_answer'
+
+    def __str__(self):
+        return self.answerer.nickname+": "+self.content[:30]
+
     def to_dict(self):
         return dict(
                 content=self.content,
@@ -80,6 +90,9 @@ class Answer(models.Model):
 class Review(models.Model):
     class Meta:
         app_label = 'question_answer'
+
+    def __str__(self):
+        return self.reviewer.nickname+": "+self.content[:30]
 
     def to_dict(self):
         return dict(

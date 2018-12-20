@@ -19,16 +19,26 @@ from question_answer import views as app_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('user', app_views.user_action),
     path('user/', app_views.user_action),
+    path('object', app_views.get_object),
     path('object/', app_views.get_object),
+    path('question', app_views.question_action),
     path('question/', app_views.question_action),
+    path('answer',app_views.answer_action),
     path('answer/',app_views.answer_action),
+    path('review',app_views.review_action),
     path('review/',app_views.review_action),
-    path('answerOutlineList/',app_views.getAnswerOutlineList),
+    path('answerOutlineList',app_views.getAnswerOutlineList),
+    path('answerOutlineList/',app_views.answer_action),
+    path('myAnswer',app_views.getMyAnswer),
     path('myAnswer/',app_views.getMyAnswer),
+    path('myQuestion',app_views.getMyQuestion),
     path('myQuestion/',app_views.getMyQuestion),
+    path('followedUser', app_views.getFollowedUser),
     path('followedUser/', app_views.getFollowedUser),
+    path('followedQuestion', app_views.getFollowedQuestion),
     path('followedQuestion/', app_views.getFollowedQuestion),
+    path('followedAnswer', app_views.getFollowedAnswer),
     path('followedAnswer/', app_views.getFollowedAnswer),
-
 ]

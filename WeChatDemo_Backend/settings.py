@@ -122,3 +122,4 @@ STATIC_URL = '/static/'
 
 WECHAT_SECRET_KEY = None
 
+APPEND_SLASH = False
